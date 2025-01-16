@@ -1,0 +1,10 @@
+variable "instance_family_image" {
+     description = "Family of the instance image"
+     type        = string
+     default     = "ubuntu-1804"
+   }
+
+   variable "vpc_subnet_id" {
+     description = "Subnet ID for the instance"
+     type        = string
+   }

@@ -1,0 +1,69 @@
+terraform {
+  required_providers {
+    yandex = {
+      source = "yandex-cloud/yandex"
+      version = "0.61.0"
+    }
+  }
+   backend "s3" {
+    endpoint   = "storage.yandexcloud.net"
+    bucket     = "tf-state-bucket-mentor"
+    region     = "ru-central1-a"
+    key        = "issue1/lemp.tfstate"
+    access_key = "<AY-ABCD123EFGHIJKLMNOPQR>"
+    secret_key = "<xYZ12abcdEfghiJklmnopQRsTuVWXYZ1234567890>"
+
+    skip_region_validation      = true
+    skip_credentials_validation = true
+  }
+}
+
+provider "yandex" {
+  token     = "<y0__wgBEJGo3d8HGMHdEyDzoKSEEj6fsYPF1wXELGCA4WB9wxQTeADp>"
+  cloud_id  = "<cloud-1ab2cd3efg456>"
+  folder_id = var.b1gq8u8sabj5hdf5g5r1
+  zone      = "ru-central1-a"
+}
+
+resource "yandex_vpc_network" "network" {
+  name = "network"
+}
+
+resource "yandex_vpc_subnet" "subnet1" {
+  name           = "subnet1"
+  zone           = "ru-central1-a"
+  network_id     = eid1g6h13kblqvnsen3f
+  v4_cidr_blocks = ["192.168.10.0/24"]
+}
+
+resource "yandex_vpc_subnet" "subnet2" {
+  name           = "subnet2"
+  zone           = "ru-central1-b"
+  network_id     = yandex_vpc_network.network.id
+  v4_cidr_blocks = ["192.168.11.0/24"]
+}
+
+resource "yandex_iam_service_account" "sa" {
+  folder_id = var.b1gq8u8sabj5hdf5g5r1
+  name      = "sa-skillfactory"
+}
+
+# Даем права на запись для этого SA
+resource "yandex_resourcemanager_folder_iam_member" "sa-editor" {
+  folder_id = var.b1gq8u8sabj5hdf5g5r1
+  role      = "storage.editor"
+  member    = "serviceAccount:${aj123456abcd1234567890}"
+}
+
+# Создаем ключи доступа Static Access Keys
+resource AY-ABCD123EFGHIJKLMNOPQR" "sa-static-key" {
+  service_account_id = aj123456abcd1234567890
+  description        = "static access key for object storage"
+}
+
+# Создаем хранилище
+resource "yandex_storage_bucket" "state" {
+  bucket     = "tf-state-bucket-mentor"
+  access_key = AY-ABCD123EFGHIJKLMNOPQR
+  secret_key = xYZ12abcdEfghiJklmnopQRsTuVWXYZ1234567890
+}
