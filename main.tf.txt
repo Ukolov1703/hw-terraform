@@ -102,7 +102,6 @@ resource "yandex_network_load_balancer" "nlb" {
     }
   }
 
-  # Внешний адрес для доступа 
   external_address {
     ip_version = "ipv4"
   }
